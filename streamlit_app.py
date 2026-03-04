@@ -1,67 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GM Official - Official Website</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body{
-            font-family: Arial;
-            margin:0;
-            background:#111;
-            color:white;
-            text-align:center;
-        }
-        header{
-            background:red;
-            padding:20px;
-            font-size:24px;
-            font-weight:bold;
-        }
-        .video-box{
-            margin:20px;
-        }
-        iframe{
-            width:90%;
-            max-width:500px;
-            height:280px;
-            border-radius:10px;
-        }
-        .btn{
-            display:inline-block;
-            padding:12px 20px;
-            background:red;
-            color:white;
-            text-decoration:none;
-            border-radius:5px;
-            margin-top:10px;
-        }
-        footer{
-            margin-top:40px;
-            padding:20px;
-            background:#222;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Calculator</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+    }
+    .calculator {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 25px #00000050;
+    }
+    .display {
+        width: 100%;
+        height: 70px;
+        font-size: 2.5em;
+        text-align: right;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        margin-bottom: 15px;
+        background-color: #ffff99; /* Highlighted result */
+        color: #222;
+        font-weight: bold;
+        text-shadow: 1px 1px #aaa;
+    }
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 80px);
+        grid-gap: 12px;
+    }
+    button {
+        padding: 20px;
+        font-size: 1.5em;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        filter: brightness(1.2);
+    }
+    .number {
+        background-color: #555;
+        color: #fff;
+    }
+    .operator {
+        background-color: #f57c00;
+        color: #fff;
+    }
+    .equal {
+        background-color: #0b8043;
+        color: #fff;
+        grid-column: span 2;
+    }
+    .zero {
+        grid-column: span 2;
+        background-color: #555;
+        color: #fff;
+    }
+</style>
 </head>
 <body>
 
-<header>
-    Welcome to GM Official 🚀
-</header>
+<div class="calculator">
+    <input type="text" class="display" id="display" disabled>
 
-<h2>Latest Video</h2>
+    <div class="buttons">
+        <button class="operator" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="append('%')">%</button>
+        <button class="operator" onclick="append('/')">/</button>
+        <button class="operator" onclick="append('*')">*</button>
 
-<div class="video-box">
-    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-    allowfullscreen></iframe>
+        <button class="number" onclick="append('7')">7</button>
+        <button class="number" onclick="append('8')">8</button>
+        <button class="number" onclick="append('9')">9</button>
+        <button class="operator" onclick="append('-')">-</button>
+
+        <button class="number" onclick="append('4')">4</button>
+        <button class="number" onclick="append('5')">5</button>
+        <button class="number" onclick="append('6')">6</button>
+        <button class="operator" onclick="append('+')">+</button>
+
+        <button class="number" onclick="append('1')">1</button>
+        <button class="number" onclick="append('2')">2</button>
+        <button class="number" onclick="append('3')">3</button>
+        <button class="equal" onclick="calculate()">=</button>
+
+        <button class="zero" onclick="append('0')">0</button>
+        <button class="number" onclick="append('.')">.</button>
+    </div>
 </div>
 
-<a class="btn" href="https://www.youtube.com/@YOURCHANNELNAME" target="_blank">
-Subscribe on YouTube
-</a>
+<script>
+    const display = document.getElementById('display');
 
-<footer>
-    © 2026 GM Official | All Rights Reserved
-</footer>
+    function append(value) {
+        display.value += value;
+    }
+
+    function clearDisplay() {
+        display.value = '';
+    }
+
+    function calculate() {
+        try {
+            let expression = display.value.replace('%','/100');
+            display.value = eval(expression);
+        } catch (e) {
+            display.value = 'Error';
+        }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', function(event) {
+        const keys = '0123456789+-*/%.';
+        if(keys.includes(event.key)) {
+            append(event.key);
+        } else if(event.key === 'Enter') {
+            calculate();
+        } else if(event.key === 'Backspace') {
+            display.value = display.value.slice(0, -1);
+        } else if(event.key.toLowerCase() === 'c') {
+            clearDisplay();
+        }
+    });
+</script>
 
 </body>
 </html>
